@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>والپیپرلند — والپیپر گیمینگ برای موبایل و دسکتاپ</title>
+<meta name="description" content="دانلود رایگان والپیپرهای گیمینگ با کیفیت ۴K برای موبایل و دسکتاپ — اکشن، فانتزی، باتل‌رویال، ریسینگ و رترو.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #06070A;
+    --glass: rgba(255,255,255,0.045);
+    --glass-strong: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.09);
+    --border-soft: rgba(255,255,255,0.06);
+    --text: #F5F5F8;
+    --text-muted: #A3A4AE;
+    --text-faint: #67686F;
+    --blue: #5B8CFF;
+    --violet: #A66BFF;
+    --cyan: #58E0D8;
+    --grad: linear-gradient(100deg, var(--violet), var(--blue) 55%, var(--cyan) 100%);
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background: var(--bg); color: var(--text);
+    font-family:'Vazirmatn','Tahoma',sans-serif; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+    position:relative; overflow-x:hidden;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background: var(--violet); color:#fff; }
+
+  /* ---------- atmosphere ---------- */
+  .orb{ position:fixed; border-radius:50%; filter: blur(90px); pointer-events:none; z-index:0; }
+  .orb-1{ width:620px; height:620px; top:-220px; right:-160px; background: radial-gradient(circle, rgba(166,107,255,.35), transparent 70%); }
+  .orb-2{ width:560px; height:560px; top:280px; left:-220px; background: radial-gradient(circle, rgba(91,140,255,.28), transparent 70%); }
+  .orb-3{ width:480px; height:480px; bottom:-200px; right:10%; background: radial-gradient(circle, rgba(88,224,216,.2), transparent 70%); }
+
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 26px; position:relative; z-index:1; }
+
+  /* ---------- header ---------- */
+  header{
+    position: sticky; top: env(safe-area-inset-top,0px); z-index:50;
+    background: rgba(6,7,10,.6); backdrop-filter: blur(18px) saturate(1.4);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .header-inner{ display:flex; align-items:center; justify-content:space-between; gap:22px; padding:16px 0; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.2rem; letter-spacing:-.02em; }
+  .brand .mark{ width:26px; height:26px; border-radius:9px; background: var(--grad); }
+  .brand small{ font-weight:500; font-size:.68rem; color: var(--text-faint); }
+
+  .search{ flex:1; max-width:400px; }
+  .search input{
+    width:100%; background: var(--glass); border:1px solid var(--border); color:var(--text);
+    font-family:inherit; font-size:.9rem; padding:11px 16px; outline:none; border-radius: 999px;
+    backdrop-filter: blur(8px);
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .search input::placeholder{ color: var(--text-faint); }
+  .search input:focus{ border-color: rgba(166,107,255,.5); background: var(--glass-strong); }
+
+  nav.top-links{ display:flex; gap:24px; font-size:.86rem; color: var(--text-muted); }
+  nav.top-links a:hover{ color: var(--text); }
+  @media (max-width:760px){ .search{ order:3; max-width:none; flex-basis:100%; } nav.top-links{ display:none; } .header-inner{ flex-wrap:wrap; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 84px 0 30px; text-align:center; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; padding: 7px 16px; border-radius:999px;
+    background: var(--glass); border:1px solid var(--border); color: var(--text-muted);
+    font-size:.8rem; font-weight:600; margin-bottom:26px;
+  }
+  .eyebrow b{ background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
+
+  .hero h1{
+    font-size: clamp(2.5rem, 6vw, 4.6rem); font-weight:800; letter-spacing:-.03em; line-height:1.15;
+    margin: 0 auto 22px; max-width: 16ch;
+  }
+  .hero h1 span{ background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p{ color: var(--text-muted); font-size:1.08rem; max-width:48ch; margin: 0 auto 36px; }
+
+  .hero-cta{ display:flex; gap:14px; justify-content:center; margin-bottom:54px; }
+  .btn-primary{
+    background: var(--grad); color:#06070A; font-weight:800; font-size:.92rem; padding:15px 30px;
+    border:none; border-radius:999px; cursor:pointer; font-family:inherit;
+    box-shadow: 0 8px 30px -8px rgba(166,107,255,.55);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 12px 34px -6px rgba(166,107,255,.7); }
+  .btn-ghost{
+    background: var(--glass); color: var(--text-muted); font-size:.92rem; padding:15px 26px;
+    border:1px solid var(--border); border-radius:999px; cursor:pointer; font-family:inherit;
+    backdrop-filter: blur(8px);
+    transition: border-color .18s ease, color .18s ease, background .18s ease;
+  }
+  .btn-ghost:hover{ border-color: var(--border-soft); color: var(--text); background: var(--glass-strong); }
+
+  .hero-stats{ display:flex; gap:0; justify-content:center; }
+  .hero-stats div{ padding: 0 32px; border-left: 1px solid var(--border-soft); }
+  .hero-stats div:last-child{ border-left:none; }
+  .hero-stats div b{ display:block; font-size:1.6rem; font-weight:800; background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero-stats div span{ font-size:.78rem; color: var(--text-faint); }
+  @media (max-width:640px){ .hero-stats{ flex-wrap:wrap; gap:14px 0; } .hero-stats div{ padding:0 16px; border-left:none; width:33%; } }
+
+  /* ---------- bento categories ---------- */
+  .bento{
+    display:grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 150px 150px;
+    gap: 14px; padding: 20px 0 56px;
+  }
+  .bento a{ grid-column: span 1; grid-row: span 1; }
+  .bento a:nth-child(1){ grid-column: span 2; grid-row: span 2; }
+  .bento a:nth-child(4){ grid-column: span 2; }
+  @media (max-width: 860px){
+    .bento{ grid-template-columns: repeat(2,1fr); grid-template-rows: 130px 130px 130px; }
+    .bento a:nth-child(1){ grid-column: span 2; grid-row: span 1; }
+    .bento a:nth-child(4){ grid-column: span 1; }
+  }
+  .bento-tile{
+    position:relative; border-radius: var(--radius); overflow:hidden; height:100%;
+    border: 1px solid var(--border-soft);
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .bento-tile:hover{ transform: translateY(-3px); border-color: var(--border); }
+  .bento-tile img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter: brightness(.62) saturate(1.1); transition: transform .5s ease, filter .3s ease; }
+  .bento-tile:hover img{ transform: scale(1.06); filter: brightness(.72) saturate(1.2); }
+  .bento-tile::after{ content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(6,7,10,.85), transparent 60%); }
+  .bento-label{ position:absolute; right:18px; bottom:16px; z-index:2; font-weight:700; font-size:1rem; }
+  .bento-label small{ display:block; font-weight:500; font-size:.72rem; color: var(--text-muted); margin-top:2px; }
+
+  /* ---------- category rail ---------- */
+  .rail{ display:flex; gap:10px; overflow-x:auto; padding: 4px 0 30px; scrollbar-width:none; }
+  .rail::-webkit-scrollbar{ display:none; }
+  .pill{
+    flex:0 0 auto; padding:10px 20px; border:1px solid var(--border); border-radius:999px;
+    color: var(--text-muted); cursor:pointer; background: var(--glass); font-family:inherit; font-size:.85rem;
+    backdrop-filter: blur(6px);
+    transition: border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .pill:hover{ color: var(--text); border-color: var(--border-soft); background: var(--glass-strong); }
+  .pill.active{ color:#06070A; background: var(--grad); border-color: transparent; font-weight:700; }
+
+  /* ---------- gallery ---------- */
+  .gallery-head{ display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:20px; border-bottom:1px solid var(--border-soft); margin-bottom:26px; }
+  .gallery-head h2{ font-size:1.5rem; font-weight:700; margin:0; letter-spacing:-.01em; }
+  .gallery-head span{ font-size:.82rem; color: var(--text-faint); }
+
+  .grid{ columns: 4 260px; column-gap:16px; }
+  @media (max-width:720px){ .grid{ columns: 2 160px; } }
+
+  .card{
+    display:block; break-inside:avoid; margin-bottom:16px; position:relative; border-radius: var(--radius-sm); overflow:hidden;
+    border: 1px solid var(--border-soft); background: var(--glass);
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{ border-color: var(--border); transform: translateY(-4px); box-shadow: 0 16px 40px -16px rgba(91,140,255,.35); }
+  .card .thumb{ position:relative; overflow:hidden; }
+  .card img{ width:100%; display:block; transition: transform .6s ease; }
+  .card:hover img{ transform: scale(1.05); }
+
+  .card .tag{
+    position:absolute; top:10px; left:10px; background: rgba(6,7,10,.55); border:1px solid var(--border);
+    color: var(--text); font-size:.68rem; font-weight:700; padding:5px 11px; border-radius:999px; backdrop-filter: blur(6px);
+  }
+  .card .badge{
+    position:absolute; top:10px; right:10px; background: var(--grad); color:#06070A;
+    font-size:.66rem; font-weight:800; padding:5px 10px; border-radius:999px;
+  }
+  .card .overlay{
+    position:absolute; inset:0; display:flex; align-items:flex-end; padding:14px;
+    background: linear-gradient(to top, rgba(6,7,10,.92) 0%, rgba(6,7,10,0) 55%);
+    opacity:0; transition: opacity .25s ease;
+  }
+  .card:hover .overlay{ opacity:1; }
+  .overlay-row{ display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; }
+  .overlay-row .meta{ font-size:.73rem; color: var(--text-muted); }
+  .overlay-row .meta b{ color: var(--text); display:block; font-size:.86rem; font-weight:600; margin-bottom:2px; }
+  .dl-btn{
+    background: var(--grad); color:#06070A; border:none; font-family:inherit; font-size:.77rem;
+    font-weight:800; padding:9px 15px; border-radius:999px; cursor:pointer; flex-shrink:0;
+  }
+
+  .load-more{
+    display:block; margin: 46px auto 20px; padding:13px 36px; background: var(--glass); border:1px solid var(--border);
+    color: var(--text); font-family:inherit; font-size:.9rem; cursor:pointer; border-radius:999px;
+    backdrop-filter: blur(6px);
+    transition: border-color .18s ease, background .18s ease;
+  }
+  .load-more:hover{ border-color: var(--border-soft); background: var(--glass-strong); }
+
+  footer{ border-top:1px solid var(--border-soft); margin-top:74px; padding:34px 0 46px; }
+  .footer-inner{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; font-size:.8rem; color: var(--text-faint); }
+  .footer-inner nav{ display:flex; gap:20px; }
+  .footer-inner nav a:hover{ color: var(--text-muted); }
+
+  /* ---------- detail view ---------- */
+  .back-link{ font-size:.86rem; color: var(--text-muted); display:inline-flex; align-items:center; gap:6px; margin: 22px 0 6px; }
+  .back-link:hover{ color: var(--text); }
+
+  .detail{ padding: 20px 0 80px; display:grid; grid-template-columns: 1.3fr .9fr; gap: 36px; align-items:start; }
+  @media (max-width: 860px){ .detail{ grid-template-columns: 1fr; } }
+
+  .preview{ border-radius: var(--radius); overflow:hidden; border:1px solid var(--border-soft); background: var(--glass); position:relative; }
+  .preview img{ width:100%; height:auto; display:block; }
+  .preview .skeleton{ position:absolute; inset:0; background: linear-gradient(100deg, var(--glass) 30%, var(--glass-strong) 50%, var(--glass) 70%); background-size:200% 100%; animation: shimmer 1.4s infinite; }
+  @keyframes shimmer{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
+
+  .detail-panel{ background: var(--glass); border:1px solid var(--border-soft); border-radius: var(--radius); padding:26px; position:sticky; top:90px; }
+  .panel-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .detail-panel h1{ font-size:1.4rem; font-weight:800; margin:0 0 6px; letter-spacing:-.01em; }
+  .detail-panel .cat{ color: var(--text-muted); font-size:.86rem; margin-bottom:22px; }
+
+  .like-btn{
+    display:flex; align-items:center; gap:6px; background: var(--glass-strong); border:1px solid var(--border-soft);
+    color: var(--text-muted); font-family:inherit; font-size:.82rem; padding:8px 13px; border-radius:999px;
+    cursor:pointer; flex-shrink:0; transition: border-color .2s ease, color .2s ease;
+  }
+  .like-btn .heart{ font-size:1rem; }
+  .like-btn:hover{ border-color: var(--violet); }
+  .like-btn.active{ color:#FF7AB8; border-color: rgba(255,122,184,.4); }
+  .like-btn.active .heart{ transform: scale(1.05); }
+
+  .spec-list{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
+  .spec{ background: var(--glass-strong); border:1px solid var(--border-soft); border-radius:12px; padding:12px 14px; }
+  .spec span{ display:block; font-size:.72rem; color: var(--text-faint); margin-bottom:4px; }
+  .spec b{ font-size:.94rem; font-weight:700; }
+
+  .res-block{ margin-bottom: 22px; }
+  .res-label{ display:block; font-size:.76rem; color: var(--text-faint); margin-bottom:10px; }
+  .res-options{ display:flex; flex-wrap:wrap; gap:8px; }
+  .res-chip{
+    background: var(--glass-strong); border:1px solid var(--border-soft); color: var(--text-muted);
+    font-family:inherit; font-size:.78rem; padding:8px 14px; border-radius:999px; cursor:pointer;
+    transition: border-color .18s ease, color .18s ease, background .18s ease;
+  }
+  .res-chip:hover{ color: var(--text); }
+  .res-chip.active{ background: var(--grad); color:#06070A; border-color:transparent; font-weight:700; }
+
+  .dl-main{
+    width:100%; background: var(--grad); color:#06070A; font-weight:800; font-size:.98rem; padding:16px;
+    border:none; border-radius:999px; cursor:pointer; font-family:inherit;
+    box-shadow: 0 10px 32px -8px rgba(166,107,255,.55);
+    transition: transform .18s ease, box-shadow .18s ease; margin-bottom:12px;
+  }
+  .dl-main:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px -6px rgba(166,107,255,.7); }
+  .dl-main:disabled{ opacity:.7; cursor:default; transform:none; }
+  .dl-note{ font-size:.76rem; color: var(--text-faint); text-align:center; margin:0 0 20px; }
+
+  .action-row{ display:flex; gap:10px; margin-bottom:16px; }
+  .icon-action{
+    flex:1; background: var(--glass-strong); border:1px solid var(--border-soft); color: var(--text-muted);
+    font-family:inherit; font-size:.8rem; padding:10px; border-radius:999px; cursor:pointer;
+    transition: border-color .18s ease, color .18s ease;
+  }
+  .icon-action:hover{ color: var(--text); border-color: var(--border); }
+
+  .toast{
+    text-align:center; font-size:.76rem; color: var(--cyan); min-height: 0; opacity:0; transition: opacity .25s ease;
+    margin-bottom: 4px;
+  }
+  .toast.show{ opacity:1; }
+
+  .more-link{ display:block; text-align:center; font-size:.86rem; color: var(--text-muted); border:1px solid var(--border); border-radius:999px; padding:12px; background: var(--glass); }
+  .more-link:hover{ color: var(--text); background: var(--glass-strong); }
+
+  .related-section{ padding-top: 10px; padding-bottom: 40px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .card img, .card .overlay, .bento-tile, .bento-tile img{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top"><span class="mark"></span>والپیپرلند<small>GAMING</small></a>
+    <div class="search"><input type="text" id="searchInput" placeholder="جستجو... مثلاً «فانتزی» یا «ریسینگ»"></div>
+    <nav class="top-links">
+      <a href="#gallery">گالری</a><a href="#">موبایل</a><a href="#">دسکتاپ</a><a href="#">درباره ما</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap" id="listView">
+    <section class="hero">
+      <div class="eyebrow" id="heroEyebrow">گالری اختصاصی <b>گیمینگ</b> — بروزرسانی هفتگی</div>
+      <h1 id="heroTitle">والپیپرهایی برای <span id="heroTitleAccent">دنیای گیمرها</span></h1>
+      <p id="heroPara">والپیپرهای گیمینگ با کیفیت تا ۴K برای موبایل و دسکتاپ — اکشن، فانتزی، باتل‌رویال، ریسینگ و رترو. بدون ثبت‌نام، بدون واترمارک.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">مشاهده گالری</button>
+        <button class="btn-ghost" onclick="document.querySelector('[data-cat=mobile]').click(); document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">والپیپر موبایل</button>
+      </div>
+      <div class="hero-stats">
+        <div><b id="heroStat1">+۲۸۰</b><span>والپیپر</span></div>
+        <div><b id="heroStat2">۷</b><span>ژانر</span></div>
+        <div><b id="heroStat3">۴K</b><span>کیفیت</span></div>
+        <div><b>۰</b><span>واترمارک</span></div>
+      </div>
+    </section>
+
+    <div class="bento">
+      <a class="bento-tile" data-jump="action">
+        <img src="https://picsum.photos/id/1080/700/900" alt="اکشن">
+        <div class="bento-label">اکشن / FPS<small>+۶۰ والپیپر</small></div>
+      </a>
+      <a class="bento-tile" data-jump="fantasy">
+        <img src="https://picsum.photos/id/1060/500/400" alt="فانتزی">
+        <div class="bento-label">فانتزی / RPG<small>+۵۵ والپیپر</small></div>
+      </a>
+      <a class="bento-tile" data-jump="battle">
+        <img src="https://picsum.photos/id/1069/500/400" alt="باتل‌رویال">
+        <div class="bento-label">باتل‌رویال<small>+۴۰ والپیپر</small></div>
+      </a>
+      <a class="bento-tile" data-jump="racing">
+        <img src="https://picsum.photos/id/1044/700/400" alt="ریسینگ">
+        <div class="bento-label">ریسینگ<small>+۳۵ والپیپر</small></div>
+      </a>
+      <a class="bento-tile" data-jump="scifi">
+        <img src="https://picsum.photos/id/1074/500/400" alt="سای‌فای">
+        <div class="bento-label">سای‌فای<small>+۴۵ والپیپر</small></div>
+      </a>
+    </div>
+
+    <div class="rail" id="categoryRail">
+      <button class="pill active" data-cat="all">همه</button>
+      <button class="pill" data-cat="mobile">موبایل</button>
+      <button class="pill" data-cat="desktop">دسکتاپ</button>
+    </div>
+
+    <section id="gallery">
+      <div class="gallery-head">
+        <h2>تازه‌ترین والپیپرهای گیمینگ</h2>
+        <span id="countLabel">۲۴ مورد</span>
+      </div>
+      <div class="grid" id="grid"></div>
+      <button class="load-more" id="loadMore">نمایش موارد بیشتر</button>
+    </section>
+  </div>
+
+  <div class="wrap" id="detailView" style="display:none">
+    <a class="back-link" href="#/">بازگشت به گالری ↩</a>
+    <div class="detail">
+      <div class="preview">
+        <div class="skeleton" id="skeleton"></div>
+        <img id="mainImg" src="" alt="" style="opacity:0; transition: opacity .3s ease;">
+      </div>
+      <div class="detail-panel">
+        <div class="panel-top">
+          <h1 id="dTitle">—</h1>
+          <button class="like-btn" id="dLikeBtn" title="افزودن به علاقه‌مندی‌ها">
+            <span class="heart">♡</span><span id="likeCount">۰</span>
+          </button>
+        </div>
+        <div class="cat" id="dCatLine">—</div>
+
+        <div class="spec-list">
+          <div class="spec"><span>کیفیت</span><b id="dQuality">—</b></div>
+          <div class="spec"><span>دستگاه</span><b id="dDevice">—</b></div>
+          <div class="spec"><span>ابعاد</span><b id="dDims">—</b></div>
+          <div class="spec"><span>فرمت</span><b>JPG</b></div>
+        </div>
+
+        <div class="res-block">
+          <span class="res-label">انتخاب کیفیت دانلود</span>
+          <div class="res-options" id="resOptions"></div>
+        </div>
+
+        <button class="dl-main" id="dDlBtn">دانلود والپیپر</button>
+        <p class="dl-note">رایگان و بدون نیاز به ثبت‌نام</p>
+
+        <div class="action-row">
+          <button class="icon-action" id="copyLinkBtn">🔗 کپی لینک</button>
+          <button class="icon-action" id="shareBtn">↗ اشتراک‌گذاری</button>
+        </div>
+        <div class="toast" id="toast"></div>
+
+        <a class="more-link" href="#/">مشاهده والپیپرهای بیشتر</a>
+      </div>
+    </div>
+
+    <div class="related-section" id="relatedSection" style="display:none">
+      <div class="gallery-head"><h2>والپیپرهای مشابه</h2></div>
+      <div class="grid" id="relatedGrid"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© والپیپرلند — تمامی تصاویر صرفاً جهت استفاده شخصی و غیرتجاری هستند.</span>
+    <nav><a href="#">قوانین استفاده</a><a href="#">تماس با ما</a><a href="admin.html">ورود به پنل مدیریت</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'wl_items_v1';
+  var SETTINGS_KEY = 'wl_settings_v1';
+  var CATS_KEY = 'wl_cats_v1';
+
+  var defaultPool = [
+    {id:'1074', cat:'scifi',   title:'میدان نبرد فضایی',   tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1080', cat:'action',  title:'محاصره شبانه',       tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1071', cat:'fantasy', title:'قلعه سایه‌ها',       tag:'۲K', device:'موبایل', w:900,  h:1500},
+    {id:'1069', cat:'battle',  title:'آخرین بازمانده',     tag:'۴K', device:'دسکتاپ', w:1600, h:1050},
+    {id:'110',  cat:'retro',   title:'آرکید نئونی',        tag:'۲K', device:'موبایل', w:900,  h:1400},
+    {id:'1044', cat:'racing',  title:'پیست شب',            tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1060', cat:'fantasy', title:'اژدهای یخی',         tag:'۴K', device:'موبایل', w:900,  h:1500},
+    {id:'1084', cat:'scifi',   title:'ایستگاه مداری',      tag:'۲K', device:'دسکتاپ', w:1400, h:1000},
+    {id:'1062', cat:'action',  title:'خط مقدم',            tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1025', cat:'battle',  title:'منطقه بحرانی',       tag:'۲K', device:'موبایل', w:900,  h:1400},
+    {id:'1082', cat:'retro',   title:'پیکسل‌های طلایی',   tag:'۲K', device:'دسکتاپ', w:1400, h:1000},
+    {id:'1040', cat:'racing',  title:'دریفت بی‌پایان',     tag:'۴K', device:'موبایل', w:900,  h:1500},
+    {id:'1076', cat:'fantasy', title:'جنگل تسخیرشده',      tag:'۴K', device:'دسکتاپ', w:1600, h:1050},
+    {id:'1015', cat:'scifi',   title:'سیاره سرخ',          tag:'۴K', device:'موبایل', w:900,  h:1450},
+    {id:'1049', cat:'action',  title:'حمله شبانه',         tag:'۲K', device:'دسکتاپ', w:1400, h:1000},
+    {id:'1039', cat:'battle',  title:'قله بازی',           tag:'۴K', device:'دسکتاپ', w:1600, h:1100},
+    {id:'1043', cat:'fantasy', title:'دشت جادویی',         tag:'۲K', device:'موبایل', w:900,  h:1350},
+    {id:'1067', cat:'retro',   title:'بافت دیجیتال',       tag:'۲K', device:'دسکتاپ', w:1400, h:1100},
+    {id:'1059', cat:'scifi',   title:'مه سایبری',          tag:'۴K', device:'موبایل', w:900,  h:1450},
+    {id:'1078', cat:'racing',  title:'خیابان مسابقه',      tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1035', cat:'action',  title:'اتاق فرمان',         tag:'۲K', device:'موبایل', w:900,  h:1400},
+    {id:'160',  cat:'battle',  title:'مدار نهایی',         tag:'۴K', device:'موبایل', w:900,  h:1500},
+    {id:'1018', cat:'fantasy', title:'دره اژدها',          tag:'۴K', device:'دسکتاپ', w:1600, h:1000},
+    {id:'1048', cat:'scifi',   title:'شهر نئونی',          tag:'۲K', device:'موبایل', w:900,  h:1350}
+  ].map(function(it,i){
+    return { id:it.id, title:it.title, cat:it.cat, device:it.device, tag:it.tag, w:it.w, h:it.h,
+      img:'https://picsum.photos/id/'+it.id+'/'+it.w+'/'+it.h, featured:(i%6===0) };
+  });
+
+  function loadPool(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw){
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    }catch(e){}
+    return defaultPool;
+  }
+
+  var pool = loadPool();
+
+  var defaultCatsList = [
+    {key:'action', label:'اکشن / FPS'}, {key:'fantasy', label:'فانتزی / RPG'},
+    {key:'battle', label:'باتل‌رویال'}, {key:'racing', label:'ریسینگ'},
+    {key:'retro', label:'رترو / پیکسلی'}, {key:'scifi', label:'سای‌فای'}
+  ];
+  function loadCatsList(){
+    try{
+      var raw = localStorage.getItem(CATS_KEY);
+      if (raw){ var p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
+    }catch(e){}
+    return defaultCatsList;
+  }
+  var catsList = loadCatsList();
+  var catLabels = {};
+  catsList.forEach(function(c){ catLabels[c.key] = c.label; });
+
+  function loadSiteSettings(){
+    var defaults = {
+      eyebrow: 'گالری اختصاصی گیمینگ — بروزرسانی هفتگی', title: 'والپیپرهایی برای', titleAccent: 'دنیای گیمرها',
+      para: 'والپیپرهای گیمینگ با کیفیت تا ۴K برای موبایل و دسکتاپ — اکشن، فانتزی، باتل‌رویال، ریسینگ و رترو. بدون ثبت‌نام، بدون واترمارک.',
+      stat1: '+۲۸۰', stat2: '۷', stat3: '۴K'
+    };
+    try{
+      var raw = localStorage.getItem(SETTINGS_KEY);
+      if (raw) return Object.assign(defaults, JSON.parse(raw));
+    }catch(e){}
+    return defaults;
+  }
+  (function applySiteSettings(){
+    var s = loadSiteSettings();
+    document.getElementById('heroEyebrow').textContent = s.eyebrow;
+    document.getElementById('heroTitle').firstChild.textContent = s.title + ' ';
+    document.getElementById('heroTitleAccent').textContent = s.titleAccent;
+    document.getElementById('heroPara').textContent = s.para;
+    document.getElementById('heroStat1').textContent = s.stat1;
+    document.getElementById('heroStat2').textContent = s.stat2;
+    document.getElementById('heroStat3').textContent = s.stat3;
+  })();
+
+  (function renderCategoryPills(){
+    var rail = document.getElementById('categoryRail');
+    catsList.forEach(function(c){
+      var btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.setAttribute('data-cat', c.key);
+      btn.textContent = c.label;
+      rail.appendChild(btn);
+    });
+  })();
+
+  function downloadImage(url, filename, btn){
+    var original = btn ? btn.textContent : null;
+    if (btn){ btn.textContent = '...'; btn.disabled = true; }
+    fetch(url, {mode:'cors'})
+      .then(function(res){ return res.blob(); })
+      .then(function(blob){
+        var objUrl = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = objUrl; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(objUrl);
+      })
+      .catch(function(){ window.open(url, '_blank'); })
+      .finally(function(){ if (btn){ btn.textContent = original; btn.disabled = false; } });
+  }
+
+  var grid=document.getElementById('grid'), countLabel=document.getElementById('countLabel'),
+      searchInput=document.getElementById('searchInput'), rail=document.getElementById('categoryRail'),
+      loadMoreBtn=document.getElementById('loadMore');
+  var activeCat='all', shown=12;
+
+  function faNum(n){ var d=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹']; return String(n).replace(/[0-9]/g,function(x){return d[x];}); }
+  function matches(item){
+    var catOk = activeCat==='all' || item.cat===activeCat || (activeCat==='mobile'&&item.device==='موبایل') || (activeCat==='desktop'&&item.device==='دسکتاپ');
+    var q=searchInput.value.trim();
+    var qOk=!q || item.title.indexOf(q)!==-1;
+    return catOk && qOk;
+  }
+  function render(){
+    var filtered=pool.filter(matches), visible=filtered.slice(0,shown);
+    grid.innerHTML='';
+    visible.forEach(function(item){
+      var params = new URLSearchParams({
+        title:item.title, img:item.img, tag:item.tag, device:item.device,
+        cat:item.cat, w:item.w, h:item.h, pid:item.id
+      });
+      var card=document.createElement('a');
+      card.className='card';
+      card.href = '#/wallpaper?' + params.toString();
+      card.innerHTML =
+        '<div class="thumb"><img src="'+item.img+'" alt="والپیپر '+item.title+'" loading="lazy">'+
+        '<span class="tag">'+item.tag+'</span>'+
+        (item.featured?'<span class="badge">داغ</span>':'')+
+        '<div class="overlay"><div class="overlay-row"><div class="meta"><b>'+item.title+'</b>'+item.device+' · '+item.tag+'</div>'+
+        '<button class="dl-btn" type="button">دانلود</button></div></div></div>';
+      var dlBtn = card.querySelector('.dl-btn');
+      dlBtn.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        downloadImage(item.img, item.title + '.jpg', dlBtn);
+      });
+      grid.appendChild(card);
+    });
+    countLabel.textContent=faNum(filtered.length)+' مورد';
+    loadMoreBtn.style.display=(shown>=filtered.length)?'none':'block';
+  }
+  rail.addEventListener('click',function(e){
+    var btn=e.target.closest('.pill'); if(!btn) return;
+    rail.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});
+    btn.classList.add('active'); activeCat=btn.dataset.cat; shown=12; render();
+  });
+  document.querySelectorAll('.bento-tile').forEach(function(tile){
+    tile.addEventListener('click', function(){
+      var cat = tile.dataset.jump;
+      var btn = rail.querySelector('[data-cat="'+cat+'"]');
+      if (btn) btn.click();
+      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+    });
+  });
+  searchInput.addEventListener('input',function(){ shown=12; render(); });
+  loadMoreBtn.addEventListener('click',function(){ shown+=12; render(); });
+  render();
+
+  // ---------- simple hash router: gallery view <-> wallpaper detail view ----------
+  var listView = document.getElementById('listView');
+  var detailView = document.getElementById('detailView');
+  var mainImg = document.getElementById('mainImg');
+  var skeleton = document.getElementById('skeleton');
+
+  function buildResUrl(pid, w, h){
+    return 'https://picsum.photos/id/' + pid + '/' + w + '/' + h;
+  }
+
+  function showToast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+
+  function showDetail(query){
+    var p = new URLSearchParams(query);
+    var title = p.get('title') || 'والپیپر';
+    var img = p.get('img') || '';
+    var tag = p.get('tag') || '';
+    var device = p.get('device') || '';
+    var cat = p.get('cat') || '';
+    var w = parseInt(p.get('w'),10) || 0;
+    var h = parseInt(p.get('h'),10) || 0;
+    var pid = p.get('pid') || '';
+
+    document.title = title + ' — دانلود والپیپر — والپیپرلند';
+    document.getElementById('dTitle').textContent = title;
+    document.getElementById('dCatLine').textContent = (catLabels[cat] || 'گیمینگ') + ' · ' + device;
+    document.getElementById('dQuality').textContent = tag;
+    document.getElementById('dDevice').textContent = device;
+    document.getElementById('dDims').textContent = (w && h) ? (w + ' × ' + h + ' پیکسل') : '—';
+
+    skeleton.style.display = 'block';
+    mainImg.style.opacity = '0';
+    if (img){
+      mainImg.src = img;
+      mainImg.alt = 'والپیپر ' + title;
+      mainImg.onload = function(){ mainImg.style.opacity = '1'; skeleton.style.display = 'none'; };
+    }
+
+    // resolution options
+    var resWrap = document.getElementById('resOptions');
+    var options = [
+      {label:'اصلی · '+w+'×'+h, w:w, h:h},
+      {label:'دسکتاپ · 1920×1080', w:1920, h:1080},
+      {label:'موبایل · 1080×1920', w:1080, h:1920},
+      {label:'فشرده · 720p', w:1280, h:720}
+    ];
+    var chosenUrl = img;
+    resWrap.innerHTML = '';
+    options.forEach(function(opt, idx){
+      var chip = document.createElement('button');
+      chip.className = 'res-chip' + (idx===0 ? ' active' : '');
+      chip.type = 'button';
+      chip.textContent = opt.label;
+      chip.addEventListener('click', function(){
+        resWrap.querySelectorAll('.res-chip').forEach(function(c){ c.classList.remove('active'); });
+        chip.classList.add('active');
+        chosenUrl = pid ? buildResUrl(pid, opt.w, opt.h) : img;
+      });
+      resWrap.appendChild(chip);
+    });
+
+    var dBtn = document.getElementById('dDlBtn');
+    dBtn.onclick = function(){ downloadImage(chosenUrl, title + '.jpg', dBtn); };
+
+    // like button
+    var likeKey = 'wl_like_' + title;
+    var likeBtn = document.getElementById('dLikeBtn');
+    var likeCountEl = document.getElementById('likeCount');
+    var baseCount = 40 + (title.length * 7) % 260;
+    var liked = localStorage.getItem(likeKey) === '1';
+    function paintLike(){
+      likeBtn.classList.toggle('active', liked);
+      likeBtn.querySelector('.heart').textContent = liked ? '♥' : '♡';
+      likeCountEl.textContent = faNum(baseCount + (liked ? 1 : 0));
+    }
+    paintLike();
+    likeBtn.onclick = function(){
+      liked = !liked;
+      if (liked) localStorage.setItem(likeKey, '1'); else localStorage.removeItem(likeKey);
+      paintLike();
+    };
+
+    // copy link + share
+    document.getElementById('copyLinkBtn').onclick = function(){
+      var url = location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(function(){ showToast('لینک کپی شد'); });
+      } else {
+        showToast('کپی خودکار پشتیبانی نمی‌شود');
+      }
+    };
+    document.getElementById('shareBtn').onclick = function(){
+      if (navigator.share){
+        navigator.share({title:title, text:'والپیپر ' + title, url: location.href}).catch(function(){});
+      } else {
+        var url = location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(function(){ showToast('لینک کپی شد'); });
+        }
+      }
+    };
+
+    // related wallpapers
+    var relatedGrid = document.getElementById('relatedGrid');
+    var relatedSection = document.getElementById('relatedSection');
+    var related = pool.filter(function(it){ return it.cat === cat && it.title !== title; }).slice(0, 8);
+    relatedGrid.innerHTML = '';
+    if (related.length){
+      relatedSection.style.display = 'block';
+      related.forEach(function(item){
+        var rParams = new URLSearchParams({ title:item.title, img:item.img, tag:item.tag, device:item.device, cat:item.cat, w:item.w, h:item.h, pid:item.id });
+        var a = document.createElement('a');
+        a.className = 'card';
+        a.href = '#/wallpaper?' + rParams.toString();
+        a.innerHTML = '<div class="thumb"><img src="'+item.img+'" alt="والپیپر '+item.title+'" loading="lazy"><span class="tag">'+item.tag+'</span></div>';
+        relatedGrid.appendChild(a);
+      });
+    } else {
+      relatedSection.style.display = 'none';
+    }
+  }
+
+  function router(){
+    var hash = location.hash || '';
+    if (hash.indexOf('#/wallpaper') === 0){
+      var qIndex = hash.indexOf('?');
+      showDetail(qIndex >= 0 ? hash.slice(qIndex+1) : '');
+      listView.style.display = 'none';
+      detailView.style.display = 'block';
+      window.scrollTo({top:0});
+    } else {
+      listView.style.display = 'block';
+      detailView.style.display = 'none';
+    }
+  }
+  window.addEventListener('hashchange', router);
+  router();
+})();
+</script>
+
+</body>
+</html>
