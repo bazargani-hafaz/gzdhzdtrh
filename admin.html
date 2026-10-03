@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>پنل مدیریت — والپیپرلند گیمینگ</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #06070A; --glass: rgba(255,255,255,0.045); --glass-strong: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.09); --border-soft: rgba(255,255,255,0.06);
+    --text: #F5F5F8; --text-muted: #A3A4AE; --text-faint: #67686F;
+    --blue: #5B8CFF; --violet: #A66BFF; --cyan: #58E0D8;
+    --grad: linear-gradient(100deg, var(--violet), var(--blue) 55%, var(--cyan) 100%);
+    --danger: #FF5C6C; --radius: 16px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background: var(--bg); color: var(--text);
+    font-family:'Vazirmatn','Tahoma',sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;
+    padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px);
+    position:relative; overflow-x:hidden; min-height:100vh;
+  }
+  a{ color:inherit; text-decoration:none; } img{ max-width:100%; display:block; }
+
+  .orb{ position:fixed; border-radius:50%; filter: blur(90px); pointer-events:none; z-index:0; }
+  .orb-1{ width:560px; height:560px; top:-200px; right:-160px; background: radial-gradient(circle, rgba(166,107,255,.28), transparent 70%); }
+  .orb-2{ width:520px; height:520px; bottom:-220px; left:-200px; background: radial-gradient(circle, rgba(91,140,255,.22), transparent 70%); }
+
+  .wrap{ max-width: 1140px; margin:0 auto; padding: 0 24px; position:relative; z-index:1; }
+
+  header{ background: rgba(6,7,10,.6); backdrop-filter: blur(18px) saturate(1.4); border-bottom:1px solid var(--border-soft); position:sticky; top:0; z-index:20; }
+  .header-inner{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.1rem; }
+  .brand .mark{ width:22px; height:22px; border-radius:7px; background: var(--grad); }
+  .back-link{ font-size:.84rem; color: var(--text-faint); }
+  .back-link:hover{ color: var(--text-muted); }
+
+  .gate{ max-width: 380px; margin: 90px auto; background: var(--glass); border:1px solid var(--border-soft); border-radius: var(--radius); padding: 34px 30px; text-align:center; position:relative; z-index:1; }
+  .gate h1{ font-size:1.2rem; margin:0 0 8px; }
+  .gate p{ color: var(--text-faint); font-size:.86rem; margin:0 0 22px; }
+  .gate input{ width:100%; background: var(--glass-strong); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:.95rem; padding:12px 14px; border-radius:999px; outline:none; text-align:center; margin-bottom:12px; }
+  .gate input:focus{ border-color: rgba(166,107,255,.5); }
+  .gate button{ width:100%; background: var(--grad); color:#06070A; font-weight:800; font-size:.92rem; border:none; padding:12px; border-radius:999px; cursor:pointer; font-family:inherit; }
+  .gate .err{ color: var(--danger); font-size:.82rem; min-height:18px; margin-top:10px; }
+  .gate .hint{ margin-top:18px; font-size:.74rem; color: var(--text-faint); border-top:1px solid var(--border-soft); padding-top:14px; }
+
+  #app{ display:none; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; padding: 24px 0 14px; flex-wrap:wrap; gap:12px; }
+  .toolbar h1{ font-size:1.2rem; margin:0; }
+  .toolbar .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .btn{ background: var(--glass); border:1px solid var(--border); color: var(--text-muted); font-family:inherit; font-size:.8rem; padding:9px 16px; border-radius:999px; cursor:pointer; }
+  .btn:hover{ border-color: rgba(166,107,255,.4); color: var(--text); }
+  .btn.danger:hover{ border-color: var(--danger); color: var(--danger); }
+  .btn.primary{ background: var(--grad); color:#06070A; font-weight:700; border:none; }
+
+  /* tabs */
+  .tabs{ display:flex; gap:6px; border-bottom:1px solid var(--border-soft); margin-bottom:22px; overflow-x:auto; }
+  .tab{ background:transparent; border:none; color: var(--text-faint); font-family:inherit; font-size:.86rem; padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; }
+  .tab:hover{ color: var(--text-muted); }
+  .tab.active{ color: var(--text); border-bottom-color: var(--violet); font-weight:700; }
+  .tabpanel{ display:none; }
+  .tabpanel.active{ display:block; }
+
+  .panel{ background: var(--glass); border:1px solid var(--border-soft); border-radius: var(--radius); padding: 22px; margin-bottom: 22px; }
+  .panel h2{ font-size: .95rem; margin: 0 0 18px; color: var(--text-muted); font-weight:600; }
+
+  /* stat cards */
+  .stat-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap:12px; }
+  .stat-card{ background: var(--glass-strong); border:1px solid var(--border-soft); border-radius:12px; padding:16px; text-align:center; }
+  .stat-card b{ display:block; font-size:1.5rem; font-weight:800; background: var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .stat-card span{ font-size:.74rem; color: var(--text-faint); }
+
+  .form-grid{ display:grid; grid-template-columns: 1.3fr 1fr 1fr 1fr 1.4fr auto; gap:12px; align-items:end; }
+  @media (max-width: 900px){ .form-grid{ grid-template-columns: 1fr 1fr; } }
+  .field label{ display:block; font-size:.72rem; color: var(--text-faint); margin-bottom:6px; }
+  .field input, .field select, .field textarea{ width:100%; background: var(--glass-strong); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:.85rem; padding:10px 11px; border-radius:10px; outline:none; }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: rgba(166,107,255,.5); }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .add-btn{ background: var(--grad); color:#06070A; border:none; font-weight:800; font-size:.85rem; padding:11px 18px; border-radius:999px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+
+  .search-box{ margin-bottom:16px; }
+  .search-box input{ width:100%; max-width:320px; background: var(--glass-strong); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:.84rem; padding:10px 14px; border-radius:999px; outline:none; }
+
+  table{ width:100%; border-collapse: collapse; font-size:.85rem; }
+  th{ text-align:right; color: var(--text-faint); font-weight:600; font-size:.74rem; padding:10px 12px; border-bottom:1px solid var(--border-soft); }
+  td{ padding:10px 12px; border-bottom:1px solid var(--border-soft); vertical-align:middle; }
+  td img{ width:46px; height:58px; object-fit:cover; border-radius:8px; border:1px solid var(--border-soft); }
+  .row-actions{ display:flex; gap:6px; }
+  .icon-btn{ background: var(--glass-strong); border:1px solid var(--border-soft); color: var(--text-muted); font-family:inherit; font-size:.74rem; padding:6px 12px; border-radius:999px; cursor:pointer; }
+  .icon-btn:hover{ border-color: rgba(166,107,255,.4); color: var(--text); }
+  .icon-btn.danger:hover{ border-color: var(--danger); color: var(--danger); }
+  .star-btn{ background:none; border:none; cursor:pointer; font-size:1rem; color: var(--text-faint); }
+  .star-btn.active{ color: var(--violet); }
+  .empty-row td{ text-align:center; color: var(--text-faint); padding: 30px; }
+
+  .edit-row td{ background: var(--glass-strong); }
+  .edit-form{ display:grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto auto; gap:8px; align-items:end; }
+  .edit-form .field input, .edit-form .field select{ font-size:.8rem; padding:8px 9px; }
+
+  .cat-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
+  .cat-row{ display:flex; align-items:center; gap:10px; background: var(--glass-strong); border:1px solid var(--border-soft); border-radius:10px; padding:8px 12px; }
+  .cat-row input{ flex:1; background:transparent; border:none; color:var(--text); font-family:inherit; font-size:.85rem; outline:none; }
+  .cat-row .key{ font-size:.7rem; color: var(--text-faint); background: var(--glass); padding:3px 8px; border-radius:999px; }
+  .cat-add-row{ display:flex; gap:8px; }
+  .cat-add-row input{ flex:1; background: var(--glass-strong); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:.84rem; padding:10px 12px; border-radius:10px; outline:none; }
+
+  .note{ font-size:.78rem; color: var(--text-faint); line-height:1.8; }
+  .note b{ color: var(--text-muted); }
+  .save-msg{ font-size:.78rem; color: var(--cyan); margin-top:10px; opacity:0; transition: opacity .25s ease; }
+  .save-msg.show{ opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="brand"><span class="mark"></span> پنل مدیریت والپیپرلند گیمینگ</div>
+    <a class="back-link" href="index.html">بازگشت به سایت ↩</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="gate" id="gate">
+    <h1 id="gateTitle">ورود مدیر</h1>
+    <p id="gateSub">برای مدیریت سایت رمز عبور را وارد کنید.</p>
+    <input type="password" id="pwInput" placeholder="رمز عبور">
+    <button id="gateBtn">ورود</button>
+    <div class="err" id="gateErr"></div>
+    <div class="hint">این پنل فقط روی همین مرورگر و همین دستگاه کار می‌کند — یک قفل ساده برای مدیریت شخصی است، نه یک سیستم امنیتی حرفه‌ای.</div>
+  </div>
+
+  <div id="app">
+    <div class="toolbar">
+      <h1>مدیریت والپیپرلند</h1>
+      <div class="actions">
+        <button class="btn" id="exportBtn">خروجی JSON کامل</button>
+        <button class="btn" id="importBtn">ورودی JSON</button>
+        <button class="btn danger" id="logoutBtn">خروج</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="overview">نمای کلی</button>
+      <button class="tab" data-tab="items">والپیپرها</button>
+      <button class="tab" data-tab="content">محتوای سایت</button>
+      <button class="tab" data-tab="cats">دسته‌بندی‌ها</button>
+    </div>
+
+    <!-- Overview -->
+    <div class="tabpanel active" id="tab-overview">
+      <div class="panel">
+        <h2>آمار کلی</h2>
+        <div class="stat-grid" id="statGrid"></div>
+      </div>
+      <div class="panel">
+        <h2>آمار به تفکیک ژانر</h2>
+        <div class="stat-grid" id="statGenreGrid"></div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="tabpanel" id="tab-items">
+      <div class="panel">
+        <h2>افزودن والپیپر جدید</h2>
+        <div class="form-grid">
+          <div class="field"><label>عنوان</label><input type="text" id="fTitle" placeholder="مثلاً: نبرد در مه"></div>
+          <div class="field"><label>ژانر</label><select id="fCat"></select></div>
+          <div class="field"><label>دستگاه</label><select id="fDevice"><option value="دسکتاپ">دسکتاپ</option><option value="موبایل">موبایل</option></select></div>
+          <div class="field"><label>کیفیت</label><select id="fTag"><option value="۴K">۴K</option><option value="۲K">۲K</option><option value="HD">HD</option></select></div>
+          <div class="field"><label>آدرس تصویر (URL)</label><input type="text" id="fImg" placeholder="https://..."></div>
+          <button class="add-btn" id="addBtn">افزودن</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 id="listTitle">والپیپرهای فعلی</h2>
+        <div class="search-box"><input type="text" id="tableSearch" placeholder="جستجو در عنوان والپیپرها..."></div>
+        <table>
+          <thead><tr><th>پیش‌نمایش</th><th>عنوان</th><th>ژانر</th><th>دستگاه</th><th>کیفیت</th><th>ویژه</th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Site content -->
+    <div class="tabpanel" id="tab-content">
+      <div class="panel">
+        <h2>متن‌های بخش هیرو (بالای صفحه اصلی)</h2>
+        <div class="field" style="margin-bottom:14px;"><label>برچسب بالای عنوان</label><input type="text" id="sEyebrow"></div>
+        <div class="field" style="margin-bottom:14px;"><label>عنوان اصلی</label><input type="text" id="sTitle"></div>
+        <div class="field" style="margin-bottom:14px;"><label>بخش رنگی عنوان</label><input type="text" id="sTitleAccent"></div>
+        <div class="field" style="margin-bottom:14px;"><label>توضیح زیر عنوان</label><textarea id="sPara"></textarea></div>
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:6px;">
+          <div class="field"><label>عدد آمار ۱ (تعداد والپیپر)</label><input type="text" id="sStat1"></div>
+          <div class="field"><label>عدد آمار ۲ (تعداد ژانر)</label><input type="text" id="sStat2"></div>
+          <div class="field"><label>عدد آمار ۳ (کیفیت)</label><input type="text" id="sStat3"></div>
+        </div>
+        <button class="btn primary" id="saveContentBtn" style="margin-top:14px;">ذخیره محتوا</button>
+        <div class="save-msg" id="contentSaveMsg">ذخیره شد.</div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="tabpanel" id="tab-cats">
+      <div class="panel">
+        <h2>ژانرهای سایت</h2>
+        <div class="cat-list" id="catList"></div>
+        <div class="cat-add-row">
+          <input type="text" id="newCatLabel" placeholder="نام ژانر جدید (مثلاً: ترسناک)">
+          <button class="btn primary" id="addCatBtn">افزودن ژانر</button>
+        </div>
+        <p class="note" style="margin-top:16px;"><b>نکته:</b> حذف یا تغییر نام یه ژانر، والپیپرهایی که با اون ژانر ثبت شدن رو حذف نمی‌کنه، ولی ممکنه برچسبشون تا اضافه‌کردن دوباره خالی بمونه.</p>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:6px;"><b>نکته کلی:</b> همه‌ی این تغییرات (والپیپرها، متن‌ها، ژانرها) در حافظه‌ی همین مرورگر ذخیره می‌شن. برای این‌که برای همه‌ی بازدیدکننده‌ها اعمال بشه، از «خروجی JSON کامل» فایل رو بگیرید و جایگزین نسخه‌ی آپلودشده کنید، یا به یک دیتابیس واقعی مثل Cloudflare KV مهاجرت کنید.</p>
+  </div>
+</div>
+
+<input type="file" id="importFile" accept="application/json" style="display:none">
+
+<script>
+(function(){
+  var HASH_KEY = 'wl_admin_hash_v1';
+  var STORAGE_KEY = 'wl_items_v1';
+  var SETTINGS_KEY = 'wl_settings_v1';
+  var CATS_KEY = 'wl_cats_v1';
+  var SESSION_KEY = 'wl_admin_session_v1';
+
+  var defaultCats = [
+    {key:'action', label:'اکشن / FPS'}, {key:'fantasy', label:'فانتزی / RPG'},
+    {key:'battle', label:'باتل‌رویال'}, {key:'racing', label:'ریسینگ'},
+    {key:'retro', label:'رترو / پیکسلی'}, {key:'scifi', label:'سای‌فای'}
+  ];
+  var defaultSettings = {
+    eyebrow: 'گالری اختصاصی گیمینگ — بروزرسانی هفتگی',
+    title: 'والپیپرهایی برای', titleAccent: 'دنیای گیمرها',
+    para: 'والپیپرهای گیمینگ با کیفیت تا ۴K برای موبایل و دسکتاپ — اکشن، فانتزی، باتل‌رویال، ریسینگ و رترو. بدون ثبت‌نام، بدون واترمارک.',
+    stat1: '+۲۸۰', stat2: '۷', stat3: '۴K'
+  };
+
+  function simpleHash(str){
+    var h = 0, salt = 'wallpaperland-salt';
+    var s = salt + str + salt;
+    for (var i = 0; i < s.length; i++){ h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
+    return String(h);
+  }
+
+  var gate = document.getElementById('gate');
+  var app = document.getElementById('app');
+  var pwInput = document.getElementById('pwInput');
+  var gateBtn = document.getElementById('gateBtn');
+  var gateErr = document.getElementById('gateErr');
+  var gateTitle = document.getElementById('gateTitle');
+  var gateSub = document.getElementById('gateSub');
+
+  var hasPassword = !!localStorage.getItem(HASH_KEY);
+  if (!hasPassword){
+    gateTitle.textContent = 'تنظیم رمز عبور';
+    gateSub.textContent = 'اولین باره که وارد پنل می‌شید — یک رمز برای مدیریت انتخاب کنید.';
+    gateBtn.textContent = 'ذخیره و ورود';
+  }
+  function tryEnter(){
+    var val = pwInput.value;
+    if (!val){ gateErr.textContent = 'رمز عبور را وارد کنید.'; return; }
+    if (!hasPassword){
+      if (val.length < 4){ gateErr.textContent = 'رمز باید حداقل ۴ کاراکتر باشد.'; return; }
+      localStorage.setItem(HASH_KEY, simpleHash(val));
+      sessionStorage.setItem(SESSION_KEY, '1'); showApp(); return;
+    }
+    if (simpleHash(val) === localStorage.getItem(HASH_KEY)){ sessionStorage.setItem(SESSION_KEY, '1'); showApp(); }
+    else { gateErr.textContent = 'رمز عبور اشتباه است.'; }
+  }
+  gateBtn.addEventListener('click', tryEnter);
+  pwInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryEnter(); });
+  document.getElementById('logoutBtn').addEventListener('click', function(){ sessionStorage.removeItem(SESSION_KEY); location.reload(); });
+
+  function showApp(){ gate.style.display = 'none'; app.style.display = 'block'; initApp(); }
+  if (sessionStorage.getItem(SESSION_KEY) === '1' && hasPassword){ showApp(); }
+
+  // ---------- tabs ----------
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---------- storage helpers ----------
+  function loadItems(){ try{ var raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); }catch(e){} return []; }
+  function saveItems(items){ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+  function loadCats(){ try{ var raw = localStorage.getItem(CATS_KEY); if (raw){ var p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; } }catch(e){} return defaultCats.slice(); }
+  function saveCats(cats){ localStorage.setItem(CATS_KEY, JSON.stringify(cats)); }
+  function loadSettings(){ try{ var raw = localStorage.getItem(SETTINGS_KEY); if (raw) return Object.assign({}, defaultSettings, JSON.parse(raw)); }catch(e){} return Object.assign({}, defaultSettings); }
+  function saveSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
+
+  function catLabelOf(cats, key){ var f = cats.filter(function(c){ return c.key === key; })[0]; return f ? f.label : key; }
+
+  function initApp(){
+    renderOverview();
+    populateCatSelect();
+    renderTable();
+    renderContentForm();
+    renderCats();
+  }
+
+  // ---------- overview ----------
+  function renderOverview(){
+    var items = loadItems();
+    var cats = loadCats();
+    var statGrid = document.getElementById('statGrid');
+    statGrid.innerHTML =
+      '<div class="stat-card"><b>' + items.length + '</b><span>والپیپر مدیریت‌شده</span></div>' +
+      '<div class="stat-card"><b>' + cats.length + '</b><span>ژانر</span></div>' +
+      '<div class="stat-card"><b>' + items.filter(function(i){return i.featured;}).length + '</b><span>ویژه</span></div>' +
+      '<div class="stat-card"><b>' + items.filter(function(i){return i.device==='موبایل';}).length + '</b><span>موبایل</span></div>' +
+      '<div class="stat-card"><b>' + items.filter(function(i){return i.device==='دسکتاپ';}).length + '</b><span>دسکتاپ</span></div>';
+
+    var genreGrid = document.getElementById('statGenreGrid');
+    genreGrid.innerHTML = cats.map(function(c){
+      var count = items.filter(function(i){ return i.cat === c.key; }).length;
+      return '<div class="stat-card"><b>' + count + '</b><span>' + c.label + '</span></div>';
+    }).join('') || '<p class="note">هنوز ژانری تعریف نشده.</p>';
+  }
+
+  // ---------- items tab ----------
+  function populateCatSelect(){
+    var cats = loadCats();
+    var sel = document.getElementById('fCat');
+    sel.innerHTML = cats.map(function(c){ return '<option value="'+c.key+'">'+c.label+'</option>'; }).join('');
+  }
+
+  var searchTerm = '';
+  document.getElementById('tableSearch').addEventListener('input', function(e){ searchTerm = e.target.value.trim(); renderTable(); });
+
+  function renderTable(){
+    var items = loadItems();
+    var cats = loadCats();
+    var filtered = searchTerm ? items.filter(function(i){ return i.title.indexOf(searchTerm) !== -1; }) : items;
+    var tbody = document.getElementById('tbody');
+    document.getElementById('listTitle').textContent = 'والپیپرهای فعلی (' + items.length + ' مورد)';
+    tbody.innerHTML = '';
+    if (!filtered.length){
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">' + (items.length ? 'چیزی با این جستجو پیدا نشد.' : 'هنوز والپیپری با پنل اضافه نکرده‌اید. سایت فعلاً مجموعه‌ی پیش‌فرض را نمایش می‌دهد.') + '</td></tr>';
+      return;
+    }
+    filtered.forEach(function(item){
+      var realIdx = items.indexOf(item);
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><img src="' + item.img + '" alt=""></td>' +
+        '<td>' + item.title + '</td>' +
+        '<td>' + catLabelOf(cats, item.cat) + '</td>' +
+        '<td>' + item.device + '</td>' +
+        '<td>' + item.tag + '</td>' +
+        '<td><button class="star-btn' + (item.featured ? ' active' : '') + '" data-idx="' + realIdx + '" data-action="star">' + (item.featured ? '★' : '☆') + '</button></td>' +
+        '<td class="row-actions"><button class="icon-btn" data-idx="' + realIdx + '" data-action="edit">ویرایش</button><button class="icon-btn danger" data-idx="' + realIdx + '" data-action="del">حذف</button></td>';
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('[data-action="del"]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var items = loadItems();
+        items.splice(parseInt(btn.dataset.idx,10), 1);
+        saveItems(items); renderTable(); renderOverview();
+      });
+    });
+    tbody.querySelectorAll('[data-action="star"]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var items = loadItems();
+        var idx = parseInt(btn.dataset.idx,10);
+        items[idx].featured = !items[idx].featured;
+        saveItems(items); renderTable(); renderOverview();
+      });
+    });
+    tbody.querySelectorAll('[data-action="edit"]').forEach(function(btn){
+      btn.addEventListener('click', function(){ openEditRow(parseInt(btn.dataset.idx,10)); });
+    });
+  }
+
+  function openEditRow(idx){
+    var items = loadItems();
+    var item = items[idx];
+    var cats = loadCats();
+    var tbody = document.getElementById('tbody');
+    var tr = document.createElement('tr');
+    tr.className = 'edit-row';
+    tr.innerHTML = '<td colspan="7"><div class="edit-form">' +
+      '<div class="field"><label>عنوان</label><input type="text" id="eTitle" value="'+item.title+'"></div>' +
+      '<div class="field"><label>ژانر</label><select id="eCat">'+cats.map(function(c){return '<option value="'+c.key+'"'+(c.key===item.cat?' selected':'')+'>'+c.label+'</option>';}).join('')+'</select></div>' +
+      '<div class="field"><label>دستگاه</label><select id="eDevice"><option'+(item.device==='دسکتاپ'?' selected':'')+'>دسکتاپ</option><option'+(item.device==='موبایل'?' selected':'')+'>موبایل</option></select></div>' +
+      '<div class="field"><label>کیفیت</label><input type="text" id="eTag" value="'+item.tag+'"></div>' +
+      '<button class="btn primary" id="eSave">ذخیره</button>' +
+      '<button class="btn" id="eCancel">انصراف</button>' +
+      '</div></td>';
+    var existingEdit = tbody.querySelector('.edit-row');
+    if (existingEdit) existingEdit.remove();
+    var rows = tbody.querySelectorAll('tr');
+    var targetRow = null;
+    // find the row corresponding to idx by matching order in current filtered render — simplest: re-render then insert after nth non-edit row matching idx via data-idx lookup
+    var starBtn = tbody.querySelector('[data-action="star"][data-idx="'+idx+'"]');
+    var row = starBtn ? starBtn.closest('tr') : null;
+    if (row) row.after(tr); else tbody.appendChild(tr);
+
+    document.getElementById('eCancel').addEventListener('click', function(){ tr.remove(); });
+    document.getElementById('eSave').addEventListener('click', function(){
+      var items = loadItems();
+      items[idx].title = document.getElementById('eTitle').value.trim() || items[idx].title;
+      items[idx].cat = document.getElementById('eCat').value;
+      items[idx].device = document.getElementById('eDevice').value;
+      items[idx].tag = document.getElementById('eTag').value.trim() || items[idx].tag;
+      saveItems(items);
+      tr.remove();
+      renderTable(); renderOverview();
+    });
+  }
+
+  document.getElementById('addBtn').addEventListener('click', function(){
+    var title = document.getElementById('fTitle').value.trim();
+    var img = document.getElementById('fImg').value.trim();
+    if (!title || !img){ alert('عنوان و آدرس تصویر را وارد کنید.'); return; }
+    var item = { title:title, cat:document.getElementById('fCat').value, device:document.getElementById('fDevice').value,
+      tag:document.getElementById('fTag').value, img:img, w:'', h:'', featured:false };
+    var items = loadItems(); items.unshift(item); saveItems(items);
+    document.getElementById('fTitle').value = ''; document.getElementById('fImg').value = '';
+    renderTable(); renderOverview();
+  });
+
+  // ---------- content tab ----------
+  function renderContentForm(){
+    var s = loadSettings();
+    document.getElementById('sEyebrow').value = s.eyebrow;
+    document.getElementById('sTitle').value = s.title;
+    document.getElementById('sTitleAccent').value = s.titleAccent;
+    document.getElementById('sPara').value = s.para;
+    document.getElementById('sStat1').value = s.stat1;
+    document.getElementById('sStat2').value = s.stat2;
+    document.getElementById('sStat3').value = s.stat3;
+  }
+  document.getElementById('saveContentBtn').addEventListener('click', function(){
+    var s = {
+      eyebrow: document.getElementById('sEyebrow').value,
+      title: document.getElementById('sTitle').value,
+      titleAccent: document.getElementById('sTitleAccent').value,
+      para: document.getElementById('sPara').value,
+      stat1: document.getElementById('sStat1').value,
+      stat2: document.getElementById('sStat2').value,
+      stat3: document.getElementById('sStat3').value
+    };
+    saveSettings(s);
+    var msg = document.getElementById('contentSaveMsg');
+    msg.classList.add('show');
+    setTimeout(function(){ msg.classList.remove('show'); }, 2000);
+  });
+
+  // ---------- categories tab ----------
+  function renderCats(){
+    var cats = loadCats();
+    var wrap = document.getElementById('catList');
+    wrap.innerHTML = '';
+    cats.forEach(function(c, idx){
+      var row = document.createElement('div');
+      row.className = 'cat-row';
+      row.innerHTML = '<span class="key">'+c.key+'</span><input type="text" value="'+c.label+'" data-idx="'+idx+'"><button class="icon-btn danger" data-idx="'+idx+'">حذف</button>';
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var cats = loadCats();
+        cats[parseInt(inp.dataset.idx,10)].label = inp.value.trim();
+        saveCats(cats); populateCatSelect(); renderTable(); renderOverview();
+      });
+    });
+    wrap.querySelectorAll('.icon-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var cats = loadCats();
+        cats.splice(parseInt(btn.dataset.idx,10), 1);
+        saveCats(cats); renderCats(); populateCatSelect(); renderTable(); renderOverview();
+      });
+    });
+  }
+  document.getElementById('addCatBtn').addEventListener('click', function(){
+    var label = document.getElementById('newCatLabel').value.trim();
+    if (!label) return;
+    var key = 'cat_' + Date.now();
+    var cats = loadCats();
+    cats.push({key:key, label:label});
+    saveCats(cats);
+    document.getElementById('newCatLabel').value = '';
+    renderCats(); populateCatSelect(); renderOverview();
+  });
+
+  // ---------- export / import ----------
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var payload = { items: loadItems(), settings: loadSettings(), categories: loadCats() };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'wallpaperland-gaming-data.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  });
+  document.getElementById('importBtn').addEventListener('click', function(){ document.getElementById('importFile').click(); });
+  document.getElementById('importFile').addEventListener('change', function(e){
+    var file = e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var parsed = JSON.parse(reader.result);
+        if (parsed.items) saveItems(parsed.items);
+        if (parsed.settings) saveSettings(parsed.settings);
+        if (parsed.categories) saveCats(parsed.categories);
+        else if (Array.isArray(parsed)) saveItems(parsed); // backward compat with old export format
+        initApp();
+      }catch(err){ alert('فایل JSON معتبر نیست.'); }
+    };
+    reader.readAsText(file); e.target.value = '';
+  });
+})();
+</script>
+
+</body>
+</html>
